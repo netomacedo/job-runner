@@ -31,7 +31,7 @@
     </dependencies>
 
     <build>
-        <finalName>maven-unit-test</finalName>
+        <finalName>job-runner-test</finalName>
         <plugins>
 
             <plugin>
