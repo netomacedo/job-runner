@@ -1,0 +1,11 @@
+Job runner java 8 application to process Async Tasks poping from the queue and executing.
+
+You will only need to run those command (from CMD) to start the application.
+
+#BUILD AND GENERATE JAR FILE: maven build
+
+#YOU CAN GET THE JAR FILE IN /build/libs/project_name.jar
+
+#TO RUN UNIT TESTS USE: maven test --tests JobTest
+
+#RUN APPLICATION USING: java -jar logs_challenge-0.0.1-SNAPSHOT.jar

@@ -1,20 +1,17 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Report {
 
-    private String jobDescription;
-    private String state;
+    private List<JobReport> jobReports = new ArrayList<>();
 
-    public Report (String jobDescription, String state){
-        this.jobDescription = jobDescription;
-        this.state = state;
-    }
+   public void addJobReport(JobReport jobReport) {
+       this.jobReports.add(jobReport);
+   }
 
-    public String getJobDescription() {
-        return jobDescription;
-    }
-
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
+    public List<JobReport> getJobReports() {
+        return jobReports;
     }
 }

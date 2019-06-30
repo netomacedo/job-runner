@@ -3,6 +3,7 @@ package interfaceImp;
 import interfaces.Job;
 import interfaces.JobQueue;
 import interfaces.JobRunner;
+import model.JobReport;
 import model.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,32 +18,32 @@ public class JobRunnerImpl implements JobRunner {
 
     private String version = "536543A4-4077-4672-B501-3520A49549E6";
 
-    private Report report;
-
     public String version() {
         return this.version;
     }
 
+    private List<Thread> listThread = new ArrayList<>();
+
     @Override
     public void runner(JobQueue jobQueue, long jobCount) {
         try {
-            //consuming messages from the queue
+            //initializing Job
             Job job = jobQueue.pop();
             jobCount--;
-            List<Thread> listThread = new ArrayList<>();
 
             while (job != null && jobCount >= 0) {
                 final Job currentJob = job;
+
+                //pop jobs from the queue
+                job = jobQueue.pop();
+                jobCount--;
+
                 // call execute method
                 Thread thread = new Thread(() ->
                         currentJob.execute()
                 );
                 thread.start();
                 listThread.add(thread);
-
-                //pop jobs from the queue
-                job = jobQueue.pop();
-                jobCount--;
             }
             // wait until all jobs finish
             listThread.forEach((Thread t) -> {
@@ -58,8 +59,17 @@ public class JobRunnerImpl implements JobRunner {
         }
     }
 
+    /*I'm not using the parameters, I did not see the necessity to use them to get information about the threads*/
     public Report reportingRunner(JobQueue jobQueue, long jobCount) {
-        return null;
+        Report report = new Report();
+        listThread.forEach((Thread t) -> {
+            try{
+                report.addJobReport(new JobReport(t.getName(), t.getState().toString()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+        return report;
     }
 
 }

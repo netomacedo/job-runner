@@ -1,9 +1,8 @@
 import interfaceImp.JobQueueImp;
 import interfaceImp.JobRunnerImpl;
 import interfaces.Job;
-import interfaces.JobQueue;
+import model.Report;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,14 +53,34 @@ public class JobTest {
     }
 
     @Test
-    public void getInformationFromJobs() throws InterruptedException {
+    public void jobExecutedToBeTwoThreads() throws InterruptedException {
+        Job job1 = newJob(1, 1, 1000, "Job1 executed");
+        queue.put(job1);
+
         Job job2 = newJob(2, 2, 1000, "Job2 executed");
         queue.put(job2);
         jobQueue = new JobQueueImp(queue);
-        jobRunner.runner(jobQueue, 1);
 
-        jobRunner.reportingRunner(jobQueue, 1);
+        try {
+            jobRunner.runner(jobQueue, 2);// impl internal async
+            assertEquals("Job1 executed\r\nJob2 executed\r\n", outContent.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    @Test
+    public void getThreadStateTerminated() throws InterruptedException {
+        Job job1 = newJob(1, 1, 1000, "Job1 executed");
+        queue.put(job1);
+        jobQueue = new JobQueueImp(queue);
+
+        jobRunner.runner(jobQueue, 1);
+        Report report = jobRunner.reportingRunner(jobQueue, 1);
+        assertEquals(1, report.getJobReports().size());
+        assertEquals("TERMINATED", report.getJobReports().get(0).getState());
+    }
+
 
     public static Job newJob(long customerId, long uniqueId, int duration, String execute) {
         return new Job() {
