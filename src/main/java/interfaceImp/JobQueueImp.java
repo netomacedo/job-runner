@@ -4,6 +4,13 @@ import interfaces.Job;
 import interfaces.JobQueue;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Implementation of JobQueue to pop elements from the queue
+ *
+ * @author Francisco Neto
+ * @since 06-2019
+ */
+
 public class JobQueueImp implements JobQueue {
 
     private BlockingQueue<Job> queue;
@@ -12,6 +19,12 @@ public class JobQueueImp implements JobQueue {
         this.queue = queue;
     }
 
+    /**
+     * pop jobs from the queue.
+     *
+     * @param
+     * @return the Job founded.
+     */
     public Job pop() {
         Job jobRemoved = null;
         if(queue.size() == 0){

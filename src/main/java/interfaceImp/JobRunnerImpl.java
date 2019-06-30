@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of JobRunner to process Jobs
+ *
+ * @author Francisco Neto
+ * @since 06-2019
+ */
 
 public class JobRunnerImpl implements JobRunner {
 
@@ -24,6 +30,13 @@ public class JobRunnerImpl implements JobRunner {
 
     private List<Thread> listThread = new ArrayList<>();
 
+
+    /**
+     * run and process Job queue .
+     *
+     * @param jobQueue, jobCount
+     * @return void.
+     */
     @Override
     public void runner(JobQueue jobQueue, long jobCount) {
         try {
@@ -59,7 +72,16 @@ public class JobRunnerImpl implements JobRunner {
         }
     }
 
-    /*I'm not using the parameters, I did not see the necessity to use them to get information about the threads*/
+
+    /**
+     * Implementation to get details from jobs.
+     *
+     * @param jobQueue, jobCount
+     * @return void.
+     *
+     * I'm not using these parameters, I did not see the necessity to use them to get
+     * information about the threads
+     */
     public Report reportingRunner(JobQueue jobQueue, long jobCount) {
         Report report = new Report();
         listThread.forEach((Thread t) -> {
